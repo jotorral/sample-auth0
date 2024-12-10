@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auth0_flutter/auth0_flutter.dart';
 
+// Una vez logado, muestra en la pantalla los datos del usuario
 class UserWidget extends StatelessWidget {
   final UserProfile? user;
 

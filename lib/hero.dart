@@ -8,6 +8,7 @@ final Shader linearGradient = const LinearGradient(colors: <Color>[
 ], begin: Alignment.topLeft, end: Alignment.bottomRight)
     .createShader(const Rect.fromLTWH(0.0, 0.0, 500.0, 70.0));
 
+// Muestra la pantalla de inicio en la que pone Flutter Sample App y el botón de LOGIN
 class HeroWidget extends StatelessWidget {
   const HeroWidget({super.key});
 

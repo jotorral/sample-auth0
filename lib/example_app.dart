@@ -1,13 +1,16 @@
+import 'dart:io';  // Importa Platform
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:auth0_flutter/auth0_flutter_web.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+
 import 'constants.dart';
 import 'hero.dart';
 import 'user.dart';
 
+// Primer Widget que ejecuta la aplicación 
 class ExampleApp extends StatefulWidget {
   final Auth0? auth0;
   const ExampleApp({this.auth0, super.key});
@@ -31,24 +34,35 @@ class _ExampleAppState extends State<ExampleApp> {
         Auth0Web(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
 
     if (kIsWeb) {
-      auth0Web.onLoad().then((final credentials) => setState(() {
-            _user = credentials?.user;
-          }));
+      auth0Web.onLoad().then((final credentials){
+        if (credentials != null) {
+          setState(() {
+            _user = credentials.user;});
+          }});
     }
   }
 
   Future<void> login() async {
     try {
+      dynamic credentials;
       if (kIsWeb) {
-        return auth0Web.loginWithRedirect(redirectUrl: 'http://localhost:3000');
+        await auth0Web.loginWithRedirect(
+        redirectUrl: 'https://torralbajosemari.wixsite.com/iotspecialists');
+//        return;
       }
-
-      var credentials = await auth0
-          .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
-          // Use a Universal Link callback URL on iOS 17.4+ / macOS 14.4+
-          // useHTTPS is ignored on Android
-          .login(useHTTPS: true);
-
+      if (Platform.isIOS){
+        credentials = await auth0
+            .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
+            // Use a Universal Link callback URL on iOS 17.4+ / macOS 14.4+
+            // useHTTPS is ignored on Android
+            .login(/*useHTTPS: false*/);
+      } else if (Platform.isAndroid){
+        credentials = await auth0
+            .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
+            // Use a Universal Link callback URL on iOS 17.4+ / macOS 14.4+
+            // useHTTPS is ignored on Android
+            .login(/*useHTTPS: true*/);
+      }
       setState(() {
         _user = credentials.user;
       });
@@ -66,7 +80,7 @@ class _ExampleAppState extends State<ExampleApp> {
             .webAuthentication(scheme: dotenv.env['AUTH0_CUSTOM_SCHEME'])
             // Use a Universal Link logout URL on iOS 17.4+ / macOS 14.4+
             // useHTTPS is ignored on Android
-            .logout(useHTTPS: true);
+            .logout(/*useHTTPS: true*/);
         setState(() {
           _user = null;
         });

@@ -162,3 +162,13 @@ For general support or usage questions, use the [Auth0 Community](https://commun
 <p align="center">Auth0 is an easy-to-implement, adaptable authentication and authorization platform. To learn more check out <a href="https://auth0.com/why-auth0">Why Auth0?</a></p>
 
 <p align="center">This project is licensed under the MIT license. See the <a href="../LICENSE"> LICENSE</a> file for more info.</p>
+
+
+# **************************************************************************************************************************
+# ***                        LO QUE YO HE HECHO                                        
+# **************************************************************************************************************************
+
+Hay que entrar en https://github.com/settings/developers para añadir la aplicación que ha sido subida al repositorio
+La dirección de callback fallará y dará Error 404. Entonces mirar qué dirección tiene la Url de l página del 404 y tener en cuenta que saldrán %2F y cosas así que habrá que sustituir con "://" o "/" hasta que quede algo así como https://dev-w1gpyeme4j7v0z15.us.auth0.com/login/callback y esta es la dirección que hay que poner en callback en la aplicación en https://github.com/settings/developers
+
+En la web de auth0.com hayq eu añadir la aplicación que hemos desarrollado y después en Authentication/Social hay que añadir Google, Github, etc. En Github settings hay que poner el Client ID y el Client Secret que se ha generado antes en https://github.com/settings/developers
