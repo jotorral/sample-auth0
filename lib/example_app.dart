@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-
 import 'constants.dart';
 import 'hero.dart';
 import 'user.dart';
@@ -34,11 +33,25 @@ class _ExampleAppState extends State<ExampleApp> {
         Auth0Web(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
 
     if (kIsWeb) {
-      auth0Web.onLoad().then((final credentials){
+      auth0Web.onLoad().then((final credentials) async {
         if (credentials != null) {
+          // Si ya hay credenciales, extraemos al usuario
           setState(() {
-            _user = credentials.user;});
-          }});
+            _user = credentials.user;
+          });
+        } else {
+          // Intentar manejar el redireccionamiento
+          try {
+//            final result = await auth0Web.loginWithPopup();
+//            final user = result.user;
+            setState(() {
+//              _user = user;
+            });
+          } catch (e) {
+            print('Error durante la autenticación: $e');
+          }
+        }
+      });
     }
   }
 
@@ -47,7 +60,7 @@ class _ExampleAppState extends State<ExampleApp> {
       dynamic credentials;
       if (kIsWeb) {
         await auth0Web.loginWithRedirect(
-        redirectUrl: 'https://torralbajosemari.wixsite.com/iotspecialists');
+        redirectUrl: 'http://localhost:3000');
 //        return;
       }
       if (Platform.isIOS){
